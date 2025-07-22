@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 
 class Account
 {
@@ -16,11 +17,18 @@ public:
 
 	~Account()
 	{
-		
+		delete name;
 	}
+
+	int GetBalance();
+	int GetId();
+	char* GetName();
+	
+	void SetBalance(int money);
 
 private:
 	int id;
 	char* name;
 	int balance;
+
 };

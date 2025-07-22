@@ -5,12 +5,8 @@ void Bank::Run()
 {
 	while (true)
 	{
-		if (isQuit)
-		{
-			break;
-		}
-
-		Input();
+		PrintGuide();
+	    Input();
 	}
 }
 
@@ -21,43 +17,102 @@ void Bank::Quit()
 
 void Bank::Input()
 {
-	if ((GetAsyncKeyState('Q') & 0x8000) || (GetAsyncKeyState('q') & 0x8000))
+	char num = std::cin.get();
+
+	if (num==1)
 	{
-		Quit();
+		std::cout << "Success\n";
+		NameInput();
+		CreateAccount(name);
 	}
-	else if (GetAsyncKeyState(VK_NUMPAD1) & 0x8000)
+	else if ((int)num==2)
 	{
-		CreateAccount();
+		int PassId;
+		int PassBalance;
+
+		PassId= IdInput();
+		PassBalance = BalanceInput();
+		Deposit(PassId,PassBalance);
 	}
-	else if (GetAsyncKeyState(VK_NUMPAD2) & 0x8000)
+	else if ((int)num==3)
 	{
-		Deposit();
+		int PassId;
+		int PassBalance;
+
+		PassId = IdInput();
+		PassBalance = BalanceInput();
+		Withdraw(PassId, PassBalance);
 	}
-	else if (GetAsyncKeyState(VK_NUMPAD3) & 0x8000)
-	{
-		Withdraw();
-	}
-	else if (GetAsyncKeyState(VK_NUMPAD4) & 0x8000)
+	else if ((int)num==4)
 	{
 		Inquire();
 	}
 }
 
-void Bank::CreateAccount()
+void Bank::CreateAccount(char* name)
 {
+	account[accountNum] = new Account(accountNum, name);
+	accountNum++;
 }
 
-bool Bank::Deposit()
+void Bank::Deposit(int id, int money)
 {
-	return false;
+	int num;
+	num = account[id]->GetBalance() + money;
+	account[id]->SetBalance(num);
 }
 
-bool Bank::Withdraw()
+void Bank::Withdraw(int id, int money)
 {
-	return false;
+	int num;
+	num = account[id]->GetBalance() - money;
+	account[id]->SetBalance(num);
 }
+
 
 void Bank::Inquire()
 {
-	
+	for (int ix = 0; ix < accountNum; ix++)
+	{
+		std::cout << account[accountNum]->GetId() << "\n";
+		std::cout << account[accountNum]->GetName() << "\n";
+		std::cout << account[accountNum]->GetBalance() << "\n";
+	}
 }
+
+void Bank::PrintGuide()
+{
+	std::cout << "다음 중 하나를 선택해주세요.\n";
+	std::cout << "1.계좌 개설 (CreateAccount)\n";
+	std::cout << "2.입금 (Deposit)\n";
+	std::cout << "3.출금 (Withdraw)\n";
+	std::cout << "4.전체 고객 잔액 조회 (Inquire)\n";
+}
+
+void Bank::NameInput()
+{
+	std::cout << "이름을 입력해주세요 : \n";
+	std::cin.getline(name,1000);
+}
+
+int Bank::IdInput()
+{
+	int num;
+
+	std::cout << "Id를 입력해주세요 : \n";
+	std::cin >> num;
+
+	return num;
+}
+
+int Bank::BalanceInput()
+{
+	int num;
+
+	std::cout << "Balance를 입력해주세요 : \n";
+	std::cin >> num;
+
+	return num;
+}
+
+

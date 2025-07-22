@@ -14,3 +14,8 @@ char* Account::GetName()
 {
     return name;
 }
+
+void Account::SetBalance(int num)
+{
+    balance = num;
+}
