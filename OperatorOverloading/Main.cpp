@@ -8,17 +8,20 @@ public:
     {
     }
 
-    friend std::ostream& operator<< (std::ostream& os, const Point& p);
+    friend std::ostream& operator<< (std::ostream& os, const Point& p)
+    {
+        rreturn os << "(" << p.x << ", " << p.y << ")";
+    }        
 
 private:
     int x = 0;
     int y = 0;
 };
 
-std::ostream& operator<< (std::ostream & os, const Point & p)
-{
-    return os << "(" << p.x << ", " << p.y << ")";
-}
+//std::ostream& operator<< (std::ostream & os, const Point & p)
+//{
+//    return os << "(" << p.x << ", " << p.y << ")";
+//}
 
 int main()
 {

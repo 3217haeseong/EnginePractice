@@ -4,5 +4,6 @@
 int main()
 {
 	Bank bank;
+
 	bank.Run();
 }
