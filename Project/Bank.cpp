@@ -1,10 +1,16 @@
 #include "Bank.h"
 #include "Windows.h"
+#include <stdlib.h>
 
 void Bank::Run()
 {
 	while (true)
 	{
+		if (isQuit)
+		{
+			break;
+		}
+
 		PrintGuide();
 	    Input();
 	}
@@ -17,15 +23,21 @@ void Bank::Quit()
 
 void Bank::Input()
 {
-	char num = std::cin.get();
+	char num;
 
-	if (num==1)
+	std::cin >> num;
+	std::cin.ignore();
+
+	if (num == 'Q' || num == 'q')
 	{
-		std::cout << "Success\n";
+		// 종료. 
+		Quit();
+	}else if ( (num-'0') == 1)
+	{
 		NameInput();
 		CreateAccount(name);
 	}
-	else if ((int)num==2)
+	else if ( (num-'0') == 2)
 	{
 		int PassId;
 		int PassBalance;
@@ -34,7 +46,7 @@ void Bank::Input()
 		PassBalance = BalanceInput();
 		Deposit(PassId,PassBalance);
 	}
-	else if ((int)num==3)
+	else if ((num - '0') ==3)
 	{
 		int PassId;
 		int PassBalance;
@@ -43,9 +55,11 @@ void Bank::Input()
 		PassBalance = BalanceInput();
 		Withdraw(PassId, PassBalance);
 	}
-	else if ((int)num==4)
+	else if ((num - '0') ==4)
 	{
 		Inquire();
+	} else {
+		return;
 	}
 }
 
@@ -74,9 +88,9 @@ void Bank::Inquire()
 {
 	for (int ix = 0; ix < accountNum; ix++)
 	{
-		std::cout << account[accountNum]->GetId() << "\n";
-		std::cout << account[accountNum]->GetName() << "\n";
-		std::cout << account[accountNum]->GetBalance() << "\n";
+		std::cout << account[ix]->GetId() << "\n";
+		std::cout << account[ix]->GetName() << "\n";
+		std::cout << account[ix]->GetBalance() << "\n";
 	}
 }
 
@@ -91,8 +105,8 @@ void Bank::PrintGuide()
 
 void Bank::NameInput()
 {
-	std::cout << "이름을 입력해주세요 : \n";
-	std::cin.getline(name,1000);
+	std::cout << "이름을 입력해주세요 : ";
+	std::cin.getline(name,100);
 }
 
 int Bank::IdInput()
